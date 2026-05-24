@@ -25,5 +25,5 @@ pip install pandas matplotlib
 python analysis.py
 ```
 
-## Charts
+## 📈 Charts
 ![Sales Analysis](charts.png)

@@ -70,11 +70,11 @@ ax1.set_xlabel('Genre')
 ax1.set_ylabel('Sales (M)')
 ax1.tick_params(axis='x', rotation=45)
 
-# --- Chart 2: Most Sucessfull platforms
+# --- Chart 2: Most Sucessfull publishers
 
 ax2 = axes[0,1]
 publishers.head(15).plot(kind="bar",ax=ax2, color="blue")
-ax2.set_title('Sales sorted by platforms')
+ax2.set_title('Sales sorted by publishers')
 ax2.set_xlabel("Platforms")
 ax2.set_ylabel('Sales (M)')
 ax2.tick_params(axis='x', rotation=45)
