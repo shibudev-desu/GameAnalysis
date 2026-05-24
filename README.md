@@ -1,5 +1,4 @@
 # 🎮 GameAnalysis
-Personal project made to remember basic programming skills.
 Exploratory data analysis in 16,000+ games, uncovering trends in sales, genres and publishers
 
 ## 📊 Key Findings

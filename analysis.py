@@ -16,7 +16,7 @@ except:
 print(gameData.shape)
 
 # Cleaning Empty Data, making sure Year and Publisher both exist. Aswell as making sure the years are correctly informed.
-gameData.dropna(subset=['Year', 'Publisher'])
+gameData = gameData.dropna(subset=['Year', 'Publisher'])
 gameData['Year'] = gameData['Year'].astype('Int32')
 gameData = gameData[gameData['Year'] <= 2024]
 print(gameData.shape)
@@ -35,7 +35,7 @@ gameData['Publisher'] = gameData['Publisher'].replace({
 # Global searches
 top10 = gameData.nlargest(10, 'Global_Sales')[['Name','Platform','Year','Global_Sales']] # Top 10 Games on the market
 platforms = gameData.groupby('Platform')['Global_Sales'].sum().sort_values(ascending=False) # Best platforms globally
-plat = gameData.groupby('Publisher')['Global_Sales'].sum().sort_values(ascending=False) # Publishers with most Sales
+publishers = gameData.groupby('Publisher')['Global_Sales'].sum().sort_values(ascending=False) # Publishers with most Sales
 gnrGBL = gameData.groupby('Genre')['Global_Sales'].sum().sort_values(ascending=False) # Genres most sold
 highest = gameData.groupby('Year')['Rank'].count().sort_values(ascending=False) # Years sorted by launches
 
@@ -47,7 +47,7 @@ regionsby = (region/region.sum()*100).round(1) # Sales sorted in percentage for 
 
 if input("Show all searches in full?") == 'Yes':
   print("Top 10 Games based on sales\n", top10)
-  print("Most Sucessfull Platforms based on Sales\n", plat.head(10))
+  print("Most Sucessfull Platforms based on Sales\n", platforms.head(10))
   print("Most sucessfull by genre globally\n", gnrGBL)
   print("Most sucessfull by genre in EU, NA and JP (% Style)\n", gnr)
   print("In percentage, Regional\n", regionsby)
@@ -73,7 +73,7 @@ ax1.tick_params(axis='x', rotation=45)
 # --- Chart 2: Most Sucessfull platforms
 
 ax2 = axes[0,1]
-plat.head(15).plot(kind="bar",ax=ax2, color="blue")
+publishers.head(15).plot(kind="bar",ax=ax2, color="blue")
 ax2.set_title('Sales sorted by platforms')
 ax2.set_xlabel("Platforms")
 ax2.set_ylabel('Sales (M)')
@@ -84,7 +84,6 @@ ax2.tick_params(axis='x', rotation=45)
 ax3 = axes[1,0]
 regionsby.head(15).plot(kind="pie",ax=ax3, color="blue", autopct='%1.1f%%', startangle=90, labels=['Europe', 'Japan', 'North America'])
 ax3.set_title('Sales sorted by regions')
-ax3.tick_params(axis='x', rotation=45)
 
 # --- Chart 4: Years with most launches
 
