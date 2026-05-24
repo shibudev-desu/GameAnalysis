@@ -15,13 +15,13 @@ except:
 
 print(gameData.shape)
 
-# Cleaning Empty Data
+# Cleaning Empty Data, making sure Year and Publisher both exist. Aswell as making sure the years are correctly informed.
 gameData.dropna(subset=['Year', 'Publisher'])
 gameData['Year'] = gameData['Year'].astype('Int32')
 gameData = gameData[gameData['Year'] <= 2024]
 print(gameData.shape)
 
-# Renaming
+# Renaming publishers to be more compact.
 gameData['Publisher'] = gameData['Publisher'].replace({
   'Sony Computer Entertainment': 'Sony',
   'Take-Two Interactive': 'Take Two',
@@ -31,19 +31,19 @@ gameData['Publisher'] = gameData['Publisher'].replace({
   'Warner Bros. Interactive Entertainment': 'Warner Bros.'
 }) 
 
-""" Questions """
-top10 = gameData.nlargest(10, 'Global_Sales')[['Name','Platform','Year','Global_Sales']]
+# Questions being answerd through queries
+# Global searches
+top10 = gameData.nlargest(10, 'Global_Sales')[['Name','Platform','Year','Global_Sales']] # Top 10 Games on the market
+platforms = gameData.groupby('Platform')['Global_Sales'].sum().sort_values(ascending=False) # Best platforms globally
+plat = gameData.groupby('Publisher')['Global_Sales'].sum().sort_values(ascending=False) # Publishers with most Sales
+gnrGBL = gameData.groupby('Genre')['Global_Sales'].sum().sort_values(ascending=False) # Genres most sold
+highest = gameData.groupby('Year')['Rank'].count().sort_values(ascending=False) # Years sorted by launches
 
-plat = gameData.groupby('Publisher')['Global_Sales'].sum().sort_values(ascending=False)
-
-gnrGBL = gameData.groupby('Genre')['Global_Sales'].sum().sort_values(ascending=False)
-
-gnr = gameData.groupby('Genre')[['EU_Sales','NA_Sales','JP_Sales']].sum()
-
+# Regional
+gnr = gameData.groupby('Genre')[['EU_Sales','NA_Sales','JP_Sales']].sum() # Genre sales in each regions 
 region = gameData[['EU_Sales', 'JP_Sales', 'NA_Sales']].sum()
-regionsby = (region/region.sum()*100).round(1)
+regionsby = (region/region.sum()*100).round(1) # Sales sorted in percentage for each region
 
-highest = gameData.groupby('Year')['Rank'].count().sort_values(ascending=False)
 
 if input("Show all searches in full?") == 'Yes':
   print("Top 10 Games based on sales\n", top10)
@@ -53,7 +53,11 @@ if input("Show all searches in full?") == 'Yes':
   print("In percentage, Regional\n", regionsby)
   print("Years where the highest amount of games where released\n", highest)
 
-""" Charts """
+# ============================================================
+#   Charts
+#   Each chart is done with a certain search
+#   Each one is made to be easily readable
+# ============================================================
 
 fig, axes = plt.subplots(2, 2, figsize=(14, 10))
 fig.suptitle('Video Game Sales Analysis', fontsize=16, fontweight='bold')
