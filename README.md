@@ -27,3 +27,21 @@ python analysis.py
 
 ## 📈 Charts
 ![Sales Analysis](charts.png)
+
+## 🤖 Machine Learning Model
+
+Built a binary classifier to predict whether a game will sell over 1 million copies globally.
+
+**Approach:** Random Forest Classifier with 100 estimators
+**Features:** Genre, Platform, Publisher, Year
+**Target:** Global Sales ≥ 1M (binary: 0 or 1)
+
+| | Default | Balanced Weights |
+|---|---|---|
+| Accuracy | 86% | 83% |
+| Recall (1M+ games) | 31% | 42% |
+| F1 (1M+ games) | 35% | 37% |
+
+**Key detail:** The dataset used is heavily imbalanced — only ~12% of games sold over 1M copies. 
+Using `class_weight='balanced'` reduced overall accuracy but improved the model's 
+ability to identify sucessfull games, revealing a precision-recall trade-off.
