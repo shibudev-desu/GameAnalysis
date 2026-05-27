@@ -32,16 +32,21 @@ python analysis.py
 
 Built a binary classifier to predict whether a game will sell over 1 million copies globally.
 
-**Approach:** Random Forest Classifier with 100 estimators
-**Features:** Genre, Platform, Publisher, Year
-**Target:** Global Sales ≥ 1M (binary: 0 or 1)
+* **Approach:** Random Forest Classifier with 100 estimators 
++ **Features:** Genre, Platform, Publisher, Year 
+- **Target:** Global Sales ≥ 1M (binary: 0 or 1) 
 
-| | Default | Balanced Weights |
-|---|---|---|
-| Accuracy | 86% | 83% |
-| Recall (1M+ games) | 31% | 42% |
-| F1 (1M+ games) | 35% | 37% |
+| | Default | Balanced Weights | SMOTE |
+|---|---|---|---|
+| Accuracy | 86% | 83% | 84% |
+| Recall (1M+ games) | 31% | 42% | 41% |
+| F1 (1M+ games) | 35% | 37% | 38% |
 
-**Key detail:** The dataset used is heavily imbalanced — only ~12% of games sold over 1M copies. 
+- **Key note:** The dataset used is heavily imbalanced — only ~12% of games sold over 1M copies. 
 Using `class_weight='balanced'` reduced overall accuracy but improved the model's 
-ability to identify sucessfull games, revealing a precision-recall trade-off.
+ability to identify sucessful games, revealing a precision-recall trade-off.
+
+- **Note on SMOTE:** Applying SMOTE before the train/test split 
+inflated results to 89% (data leakage). Correct application — 
+SMOTE only on training data — yielded an honest 84%, with improved 
+recall on hit games compared to the baseline.

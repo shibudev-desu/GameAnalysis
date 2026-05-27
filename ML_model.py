@@ -3,6 +3,9 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
+from imblearn.over_sampling import SMOTE
+
+# ============================================================
 
 try: 
   gameData = pd.read_csv("games.csv")
@@ -18,6 +21,10 @@ gameData['Platform_enc'] = enc.fit_transform(gameData['Platform'])
 
 X = gameData[['Genre_enc', 'Platform_enc', 'Publisher_enc', 'Year']]
 y = (gameData['Global_Sales'] >= 1).astype(int) # Games that have more than one million sales
+X = X.dropna() # Cleaning data (Nan)
+y = y[X.index] # Equalizing X and Y
+
+# ============================================================
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, 
@@ -25,13 +32,17 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42 
 )
 
+smote = SMOTE(random_state=42)
+X_train, y_train = smote.fit_resample(X_train, y_train) # Resampling, making sure there is enough data for training and dodging leakage
+
 model = RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced') 
 model.fit(X_train, y_train) # Training model
 
-# Faz previsões
-y_pred = model.predict(X_test)
+y_pred = model.predict(X_test) # Prediction
 
-# Avalia
+# ============================================================
+
+# Results
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
