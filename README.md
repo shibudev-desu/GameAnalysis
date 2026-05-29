@@ -50,3 +50,10 @@ ability to identify sucessful games, revealing a precision-recall trade-off.
 inflated results to 89% (data leakage). Correct application — 
 SMOTE only on training data — yielded an honest 84%, with improved 
 recall on hit games compared to the baseline.
+
+- **Note on Cross-Validation:** Attempted k-fold cross-validation 
+with a Pipeline to prevent data leakage between folds. Results 
+showed high variance across folds (R² ranging from -2 to -448), 
+suggesting the dataset's skewed sales distribution makes it 
+unstable for this evaluation method. Train/test split R² of 0.30 
+is considered the reliable benchmark.
